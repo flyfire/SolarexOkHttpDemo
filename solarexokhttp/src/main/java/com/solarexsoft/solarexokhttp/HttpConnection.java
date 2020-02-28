@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import javax.net.ssl.SSLSocketFactory;
+
 /**
  * <pre>
  *    Author: houruhou
@@ -23,6 +25,12 @@ public class HttpConnection {
     private Request request;
     private InputStream inputStream;
     private OutputStream outputStream;
+
+    private SSLSocketFactory sslSocketFactory;
+
+    public HttpConnection(SSLSocketFactory sslSocketFactory) {
+        this.sslSocketFactory = sslSocketFactory;
+    }
 
     public boolean isSameAddress(String host, int port) {
         if (socket == null) {
@@ -40,7 +48,11 @@ public class HttpConnection {
         if (socket == null || socket.isClosed()) {
             HttpUrl url = request.url();
             if (url.protocol.equalsIgnoreCase("https")) {
-                // todo
+                if (sslSocketFactory == null) {
+                    socket = SSLSocketFactory.getDefault().createSocket();
+                } else {
+                    socket = sslSocketFactory.createSocket();
+                }
             } else {
                 socket = new Socket();
             }
