@@ -43,7 +43,7 @@ public class SolarexHttpClient {
 
     public static final class Builder {
         Dispatcher dispatcher;
-        int retrys;
+        int retrys = 3;
         ConnectionPool connectionPool;
         SSLSocketFactory sslSocketFactory;
 
@@ -71,8 +71,8 @@ public class SolarexHttpClient {
             if (dispatcher == null) {
                 dispatcher = new Dispatcher();
             }
-            if (retrys == 0) {
-                retrys = 1;
+            if (retrys < 0) {
+                retrys = 3;
             }
             if (connectionPool == null) {
                 connectionPool = new ConnectionPool();
