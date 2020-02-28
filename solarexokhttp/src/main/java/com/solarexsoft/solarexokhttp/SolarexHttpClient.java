@@ -1,6 +1,11 @@
 package com.solarexsoft.solarexokhttp;
 
 
+import com.solarexsoft.solarexokhttp.chain.Interceptor;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.net.ssl.SSLSocketFactory;
 
 /**
@@ -17,12 +22,14 @@ public class SolarexHttpClient {
     private final int retrys;
     private final ConnectionPool connectionPool;
     private final SSLSocketFactory sslSocketFactory;
+    private final List<Interceptor> interceptors;
 
     public SolarexHttpClient(Builder builder) {
         this.dispatcher = builder.dispatcher;
         this.retrys = builder.retrys;
         this.connectionPool = builder.connectionPool;
         this.sslSocketFactory = builder.sslSocketFactory;
+        this.interceptors = builder.interceptors;
     }
 
     public Dispatcher dispatcher() {
@@ -46,6 +53,7 @@ public class SolarexHttpClient {
         int retrys = 3;
         ConnectionPool connectionPool;
         SSLSocketFactory sslSocketFactory;
+        List<Interceptor> interceptors;
 
         public Builder dispatcher(Dispatcher dispatcher) {
             this.dispatcher = dispatcher;
@@ -64,6 +72,14 @@ public class SolarexHttpClient {
 
         public Builder sslSocketFactory(SSLSocketFactory sslSocketFactory) {
             this.sslSocketFactory = sslSocketFactory;
+            return this;
+        }
+
+        public Builder addInterceptor(Interceptor interceptor) {
+            if (interceptors == null) {
+                interceptors = new ArrayList<>();
+            }
+            interceptors.add(interceptor);
             return this;
         }
 
