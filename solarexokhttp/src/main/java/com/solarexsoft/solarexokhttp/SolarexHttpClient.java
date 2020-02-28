@@ -1,5 +1,8 @@
 package com.solarexsoft.solarexokhttp;
 
+
+import javax.net.ssl.SSLSocketFactory;
+
 /**
  * <pre>
  *    Author: houruhou
@@ -13,11 +16,13 @@ public class SolarexHttpClient {
     private final Dispatcher dispatcher;
     private final int retrys;
     private final ConnectionPool connectionPool;
+    private final SSLSocketFactory sslSocketFactory;
 
     public SolarexHttpClient(Builder builder) {
         this.dispatcher = builder.dispatcher;
         this.retrys = builder.retrys;
         this.connectionPool = builder.connectionPool;
+        this.sslSocketFactory = builder.sslSocketFactory;
     }
 
     public Dispatcher dispatcher() {
@@ -40,6 +45,7 @@ public class SolarexHttpClient {
         Dispatcher dispatcher;
         int retrys;
         ConnectionPool connectionPool;
+        SSLSocketFactory sslSocketFactory;
 
         public Builder dispatcher(Dispatcher dispatcher) {
             this.dispatcher = dispatcher;
@@ -56,6 +62,11 @@ public class SolarexHttpClient {
             return this;
         }
 
+        public Builder sslSocketFactory(SSLSocketFactory sslSocketFactory) {
+            this.sslSocketFactory = sslSocketFactory;
+            return this;
+        }
+
         public SolarexHttpClient build() {
             if (dispatcher == null) {
                 dispatcher = new Dispatcher();
@@ -66,6 +77,7 @@ public class SolarexHttpClient {
             if (connectionPool == null) {
                 connectionPool = new ConnectionPool();
             }
+
             return new SolarexHttpClient(this);
         }
     }
