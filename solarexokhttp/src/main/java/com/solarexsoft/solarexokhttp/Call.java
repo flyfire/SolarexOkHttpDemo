@@ -1,5 +1,8 @@
 package com.solarexsoft.solarexokhttp;
 
+import com.solarexsoft.solarexokhttp.chain.CallServerInterceptor;
+import com.solarexsoft.solarexokhttp.chain.ConnectionInterceptor;
+import com.solarexsoft.solarexokhttp.chain.HeadersInterceptor;
 import com.solarexsoft.solarexokhttp.chain.Interceptor;
 import com.solarexsoft.solarexokhttp.chain.InterceptorChain;
 import com.solarexsoft.solarexokhttp.chain.RetryInterceptor;
@@ -93,6 +96,9 @@ public class Call {
             interceptors.addAll(client.interceptors());
         }
         interceptors.add(new RetryInterceptor());
+        interceptors.add(new HeadersInterceptor());
+        interceptors.add(new ConnectionInterceptor());
+        interceptors.add(new CallServerInterceptor());
 
         InterceptorChain chain = new InterceptorChain(interceptors, 0, this, null);
         return chain.proceed();

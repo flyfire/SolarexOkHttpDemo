@@ -2,6 +2,8 @@ package com.solarexsoft.solarexokhttp;
 
 import android.text.TextUtils;
 
+import com.solarexsoft.solarexokhttp.codec.Http1Codec;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,9 +41,25 @@ public class HttpConnection {
         return TextUtils.equals(socket.getInetAddress().getHostName(), host) && port == socket.getPort();
     }
 
-    public InputStream call() {
-        // todo
-        return null;
+    public InputStream call(Http1Codec codec) throws IOException {
+        try {
+            createSocket();
+            codec.writeRequest(outputStream, request);
+            return inputStream;
+        } catch (IOException e) {
+            closeSocketQuietly();
+            throw new IOException(e);
+        }
+    }
+
+    private void closeSocketQuietly() {
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void createSocket() throws IOException {

@@ -48,6 +48,10 @@ public class SolarexHttpClient {
         return interceptors;
     }
 
+    public SSLSocketFactory sslSocketFactory() {
+        return sslSocketFactory;
+    }
+
     public Call newCall(Request request) {
         return new Call(request, this);
     }
