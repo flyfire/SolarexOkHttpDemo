@@ -24,7 +24,7 @@ public class SolarexHttpClient {
     private final SSLSocketFactory sslSocketFactory;
     private final List<Interceptor> interceptors;
 
-    public SolarexHttpClient(Builder builder) {
+    private SolarexHttpClient(Builder builder) {
         this.dispatcher = builder.dispatcher;
         this.retrys = builder.retrys;
         this.connectionPool = builder.connectionPool;

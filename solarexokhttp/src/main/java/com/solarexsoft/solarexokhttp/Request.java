@@ -20,7 +20,7 @@ public class Request {
     private HttpUrl url;
     private RequestBody requestBody;
 
-    public Request(Builder builder) {
+    private Request(Builder builder) {
         this.url = builder.url;
         this.method = builder.method;
         this.headers = builder.headers;
