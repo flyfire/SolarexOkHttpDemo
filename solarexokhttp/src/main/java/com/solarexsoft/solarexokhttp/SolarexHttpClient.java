@@ -44,6 +44,10 @@ public class SolarexHttpClient {
         return connectionPool;
     }
 
+    public List<Interceptor> interceptors() {
+        return interceptors;
+    }
+
     public Call newCall(Request request) {
         return new Call(request, this);
     }

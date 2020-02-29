@@ -1,6 +1,12 @@
 package com.solarexsoft.solarexokhttp;
 
+import com.solarexsoft.solarexokhttp.chain.Interceptor;
+import com.solarexsoft.solarexokhttp.chain.InterceptorChain;
+import com.solarexsoft.solarexokhttp.chain.RetryInterceptor;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <pre>
@@ -81,8 +87,14 @@ public class Call {
         }
     }
 
-    public Response getResponse() {
-        // todo
-        return null;
+    public Response getResponse() throws IOException {
+        List<Interceptor> interceptors = new ArrayList<>();
+        if (client.interceptors() != null) {
+            interceptors.addAll(client.interceptors());
+        }
+        interceptors.add(new RetryInterceptor());
+
+        InterceptorChain chain = new InterceptorChain(interceptors, 0, this, null);
+        return chain.proceed();
     }
 }
