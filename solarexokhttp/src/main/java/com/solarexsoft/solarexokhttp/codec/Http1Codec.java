@@ -143,7 +143,7 @@ public class Http1Codec {
             if (len < 0) {
                 String line = readLine(is);
                 line = line.substring(0, line.length() - 2);
-                len = Integer.valueOf(line);
+                len = Integer.valueOf(line, 16);
                 isEmptyData = len == 0;
             } else {
                 byte[] bytes = readBytes(is, len + 2);
